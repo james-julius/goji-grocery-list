@@ -5,14 +5,14 @@ import './Nav.scss';
 export default function Nav() {
     return (
       <nav>
-        <div class="logo">
+        <div className="logo">
             <h2>GroceryList</h2>
         </div>
-        <ul class="navlist">
+        <ul className="navlist">
           <NavLink to="/">
             <li>View List</li>
           </NavLink>
-          <NavLink to="/add-item">
+          <NavLink to="/grocery-entry/:id">
             <li>Add Item</li>
           </NavLink>
         </ul>

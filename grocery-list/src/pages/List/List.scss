@@ -2,5 +2,19 @@
 
 .list-page {
     @include flex-col-start-center;
-    
+
+    ul.shopping-list {
+        width: 90vw;
+        list-style-type: none;
+        border-radius: 10px;
+        padding: 0px;
+
+        li {
+            min-height: 75px;
+            width: 100%;
+            margin: 5px 0px;
+            background-color: lightgray;
+            border-radius: 10px;
+        }
+    }
 }
