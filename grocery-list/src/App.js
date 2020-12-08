@@ -6,10 +6,10 @@ import AddItem from './pages/AddItem/AddItem';
 
 function App() {
   return (
-    <div>
+    <div id="App">
       <Router>
         <Nav />
-        <Route path="/" exact component={List} />
+        <Route exact path="/" component={List} />
         <Route path="/add-item" component={AddItem} />
       </Router>
     </div>

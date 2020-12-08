@@ -1,16 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import './Nav.scss';
 
 export default function Nav() {
     return (
       <nav>
-        <ul>
-          <Link to="/">
+        <div class="logo">
+            <h2>GroceryList</h2>
+        </div>
+        <ul class="navlist">
+          <NavLink to="/">
             <li>View List</li>
-          </Link>
-          <Link to="/add-item">
+          </NavLink>
+          <NavLink to="/add-item">
             <li>Add Item</li>
-          </Link>
+          </NavLink>
         </ul>
       </nav>
     );
