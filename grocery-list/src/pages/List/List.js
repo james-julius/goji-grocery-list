@@ -34,7 +34,7 @@ export default function List() {
         if (itemIndex !== -1) {
             items.splice(itemIndex, 1);
             localStorage.setItem('shoppingList', JSON.stringify(items));
-            toggleItemsChanged(true);
+            toggleItemsChanged();
         }
     }
 
@@ -65,10 +65,16 @@ export default function List() {
     function toggleItemsChanged() {
       setItemsChanged(!itemsChanged);
     }
-    
+
     return (
       <div className="list-page">
         Your shopping list
+        <div className="filter-option">
+            <label>Sort by:</label>
+            <select value={listFilter} onChange={e => setListFilter(e.target.value)}>
+                <option value="abc"></option>
+            </select>
+        </div>
         <ItemAdder addItem={createNewListItem}/>
           {generateFilteredShoppingList()}
       </div>

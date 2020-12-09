@@ -7,21 +7,6 @@ export default function ItemAdder({ addItem }) {
     const [haveNewItem, setHaveNewItem] = useState(false);
     const [newItemImportance, setNewItemImportance] = useState(3);
 
-    function handleImportanceChange(e) {
-        e.preventDefault();
-        setNewItemImportance(e.target.value);
-    }
-
-    function handleNewItemNameChange(e) {
-      e.preventDefault();
-      setNewItemName(e.target.value);
-    }
-
-    function handleHaveNewItemChange(e) {
-        e.preventDefault();
-        setHaveNewItem(e.target.value);
-    }
-    
     function genUniqueId() {
         const validatingUnique = true;
         while (validatingUnique) {
@@ -64,17 +49,24 @@ export default function ItemAdder({ addItem }) {
             type="text"
             min="3"
             value={newItemName}
-            onChange={handleNewItemNameChange}
+            onChange={e => setNewItemName(e.target.value)}
             placeholder="Item name.."
           />
         </label>
         <label>
           Do you have it now?
-          <input type="checkbox" value={haveNewItem} onChange={handleHaveNewItemChange}/>
+          <input
+            type="checkbox"
+            value={haveNewItem}
+            onChange={(e) => setHaveNewItem(e.target.value)}
+          />
         </label>
         <label>
           How important is this? 1 = highest, 5 = lowest
-          <select value={newItemImportance} onChange={handleImportanceChange}>
+          <select
+            value={newItemImportance}
+            onChange={(e) => setNewItemImportance(e.target.value)}
+          >
             <option value={1}>1</option>
             <option value={2}>2</option>
             <option value={3}>3</option>
@@ -82,9 +74,7 @@ export default function ItemAdder({ addItem }) {
             <option value={5}>5</option>
           </select>
         </label>
-        <button onClick={handleAddItem}>
-            Add Item
-        </button>
+        <button onClick={handleAddItem}>Add Item</button>
       </div>
     );
 }
