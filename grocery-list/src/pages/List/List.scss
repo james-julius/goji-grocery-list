@@ -3,6 +3,11 @@
 .list-page {
     @include flex-col-start-center;
 
+    h1 {
+        font-size: 1.8rem;
+        color: var(--primary-color);
+    }
+
     ul.shopping-list {
         width: 90vw;
         list-style-type: none;

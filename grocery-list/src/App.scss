@@ -2,7 +2,6 @@
 #App {
     @include flex-col-start-center;
     min-height: 100vh;
-    background-color: rgb(255, 255, 247);
     nav {
         width: 100vw;
         height: 60px;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { DateTime } from 'luxon';
+import moment from 'moment';
+import './GroceryListItem.scss';
 
 export default function GroceryListItem({ item, deleteItem}) {
     return (
@@ -11,7 +12,7 @@ export default function GroceryListItem({ item, deleteItem}) {
         ) : (
           <span className="stock-status out">Ran out</span>
         )}
-        <span className="last-updated">Last updated: </span>
+        <span className="last-updated">Last updated: {moment(item.lastUpdated).format('Do MMM')}</span>
         <Link to={`/grocery-item/${item.id}`}>
           <button className="item-link">View</button>
         </Link>

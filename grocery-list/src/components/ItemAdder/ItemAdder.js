@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { v4 as uuid } from 'uuid';
-import { DateTime } from 'luxon';
+import moment  from 'moment';
+import './ItemAdder.scss';
 
 export default function ItemAdder({ addItem }) {
     const [newItemName, setNewItemName] = useState('');
@@ -35,25 +36,29 @@ export default function ItemAdder({ addItem }) {
             name: newItemName,
             id: uniqueId,
             currentlyHave: haveNewItem,
-            lastUpdated: DateTime.local(),
+            lastUpdated: moment.now(),
+            priority: newItemImportance
         };
         addItem(newItem);
+        setNewItemName('');
+        setNewItemImportance(3);
+        setHaveNewItem(false);
     }
 
     return (
       <div className="item-adder">
-        Add a new item:
+        <h3>Add a new item:</h3>
         <label>
           Item name:
           <input
             type="text"
             min="3"
             value={newItemName}
-            onChange={e => setNewItemName(e.target.value)}
+            onChange={(e) => setNewItemName(e.target.value)}
             placeholder="Item name.."
           />
         </label>
-        <label>
+        <label class="checkbox">
           Do you have it now?
           <input
             type="checkbox"
@@ -62,7 +67,7 @@ export default function ItemAdder({ addItem }) {
           />
         </label>
         <label>
-          How important is this? 1 = highest, 5 = lowest
+          How important is this? (1 = high, 5 = low)<br/>
           <select
             value={newItemImportance}
             onChange={(e) => setNewItemImportance(e.target.value)}

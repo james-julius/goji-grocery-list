@@ -5,7 +5,7 @@ import './List.scss';
 
 export default function List() {
     const [items, setItems] = useState(null);
-    const [listFilter, setListFilter] = useState(null);
+    const [listFilter, setListFilter] = useState('abc');
     const [itemsChanged, setItemsChanged] = useState(false);
 
     useEffect(() => {
@@ -17,8 +17,10 @@ export default function List() {
                 console.log('instantiating localStorage');
                 localStorage.setItem('shoppingList', JSON.stringify([]));
                 setItems([]);
+                toggleItemsChanged();
             } else {
-              setItems(JSON.parse(localList));
+                setItems(JSON.parse(localList));
+                toggleItemsChanged();
             }
         }
     }, []);
@@ -40,27 +42,53 @@ export default function List() {
 
     function createNewListItem(item) {
         const localList = JSON.parse(window.localStorage.getItem("shoppingList"));
-        console.log('retrieved local item: ' + localList);
         localList.push(item);
         window.localStorage.setItem('shoppingList', JSON.stringify(localList));
-        setItems(localList,);
+        setItems(localList);
+        setItemsChanged(!itemsChanged);
     }
 
     const generateFilteredShoppingList = useCallback(() => {
+        const itemsCopy = items;
         /* Function that handles the list filters and maps the GroceryList accordingly. */
-        if (!items) {
+        if (!items || items.length === 0) {
             return <h4>There's nothing here yet. Add an item!</h4>;
         }
-        if (!listFilter) {
+        // Sort list items before we return.
+        switch (listFilter) {
+          case "abc":
+              itemsCopy.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+          case "zxy":
+              itemsCopy.sort(function (a, b) {
+                  if (a.name < b.name) {
+                      return 1;
+                  }
+                  if (a.name > b.name) {
+                      return -1;
+                  } else {
+                    return 0;
+                  }
+              });
+            break;
+          case "123":
+              itemsCopy.sort((a, b) => b.priority - a.priority);
+            break;
+          case "321":
+              itemsCopy.sort((a, b) => a.priority - b.priority);
+            break;
+            default:
+                // Do nothing
+            break;
+        } 
             return (
             <ul className="shopping-list">
-                {items.map((item, idx) => {
+                {itemsCopy.map((item, idx) => {
                 return <GroceryListItem item={item} key={idx} deleteItem={deleteListItem}/>;
                 })}
             </ul>
             );
-        }
-    }, [items, listFilter]);
+    }, [listFilter, itemsChanged]);
 
     function toggleItemsChanged() {
       setItemsChanged(!itemsChanged);
@@ -68,15 +96,21 @@ export default function List() {
 
     return (
       <div className="list-page">
-        Your shopping list
-        <div className="filter-option">
-            <label>Sort by:</label>
-            <select value={listFilter} onChange={e => setListFilter(e.target.value)}>
-                <option value="abc"></option>
-            </select>
+        <h1>Your shopping list</h1>
+        <ItemAdder addItem={createNewListItem} />
+        <div className="filter-dropdown">
+          <label>Sort by: </label>
+          <select
+            value={listFilter}
+            onChange={(e) => setListFilter(e.target.value)}
+          >
+            <option value="abc">Alphabetical</option>
+            <option value="zxy">Reverse Alphabetical</option>
+            <option value="123">Priority</option>
+            <option value="321">Reverse Priority</option>
+          </select>
         </div>
-        <ItemAdder addItem={createNewListItem}/>
-          {generateFilteredShoppingList()}
+        {generateFilteredShoppingList()}
       </div>
     );
 }
