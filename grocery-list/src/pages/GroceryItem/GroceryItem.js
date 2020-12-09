@@ -7,9 +7,9 @@ export default function GroceryEntry() {
 
     useEffect(() => {
       if (!item) {
-        const localList = localStorage.getItem("shoppingList");
+        const localList = JSON.parse(localStorage.getItem("shoppingList"));
         if (localList) {
-            const listItem = localList.filter((item) => item.id === groceryItemId);
+            const listItem = localList.filter((_listItem) => _listItem.id === groceryItemId);
             if (listItem) {
             setItem(listItem);
             }
