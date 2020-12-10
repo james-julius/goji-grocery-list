@@ -23,6 +23,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        user-select: none;
         .stock-status {
             width: 100%;
             text-align: center;

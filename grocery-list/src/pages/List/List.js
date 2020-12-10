@@ -34,10 +34,23 @@ export default function List() {
         const itemIndex = items.findIndex(groceryItem => groceryItem.id === itemId);
 
         if (itemIndex !== -1) {
-            items.splice(itemIndex, 1);
-            localStorage.setItem('shoppingList', JSON.stringify(items));
-            toggleItemsChanged();
+            const itemsCopy = [...items];
+            itemsCopy.splice(itemIndex, 1);
+            localStorage.setItem('shoppingList', JSON.stringify(itemsCopy));
+            setItems(itemsCopy);
         }
+    }
+
+    function toggleItemInStock(itemId) {
+        const itemIndex = items.findIndex(
+          (groceryItem) => groceryItem.id === itemId
+        );
+        const itemsCopy = [...items];
+        const groceryItem = itemsCopy[itemIndex];
+        
+        groceryItem.currentlyHave = !groceryItem.currentlyHave;
+        localStorage.setItem("shoppingList", JSON.stringify(items));
+        setItems(itemsCopy);
     }
 
     function createNewListItem(item) {
@@ -84,7 +97,12 @@ export default function List() {
             return (
             <ul className="shopping-list">
                 {itemsCopy.map((item, idx) => {
-                return <GroceryListItem item={item} key={idx} deleteItem={deleteListItem}/>;
+                return <GroceryListItem
+                          item={item} 
+                          key={idx} 
+                          deleteItem={deleteListItem}
+                          toggleItemStatus={toggleItemInStock}
+                        />;
                 })}
             </ul>
             );
