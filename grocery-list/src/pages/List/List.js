@@ -6,29 +6,25 @@ import './List.scss';
 export default function List() {
     const [items, setItems] = useState(null);
     const [listFilter, setListFilter] = useState('abc');
-    const [itemsChanged, setItemsChanged] = useState(false);
 
     useEffect(() => {
         // Ensure we have local storage set up and running on page load. If not, we create it.
         if (items === null) {
             console.log('Items not instantiated. Loading...');
-            const localList = window.localStorage.getItem("shoppingList");
+            const localList = localStorage.getItem("shoppingList");
             if (localList === null) {
                 console.log('instantiating localStorage');
                 localStorage.setItem('shoppingList', JSON.stringify([]));
                 setItems([]);
-                toggleItemsChanged();
             } else {
                 setItems(JSON.parse(localList));
-                toggleItemsChanged();
             }
         }
     }, []);
 
     useEffect(() => {
-        const localList = window.localStorage.getItem("shoppingList");
-        setItems(JSON.parse(localList));
-    }, [itemsChanged]);
+      localStorage.setItem('shoppingList', JSON.stringify(items));
+    }, [items]);
 
     function deleteListItem(itemId) {
         const itemIndex = items.findIndex(groceryItem => groceryItem.id === itemId);
@@ -36,7 +32,6 @@ export default function List() {
         if (itemIndex !== -1) {
             const itemsCopy = [...items];
             itemsCopy.splice(itemIndex, 1);
-            localStorage.setItem('shoppingList', JSON.stringify(itemsCopy));
             setItems(itemsCopy);
         }
     }
@@ -49,16 +44,13 @@ export default function List() {
         const groceryItem = itemsCopy[itemIndex];
         
         groceryItem.currentlyHave = !groceryItem.currentlyHave;
-        localStorage.setItem("shoppingList", JSON.stringify(items));
         setItems(itemsCopy);
     }
 
     function createNewListItem(item) {
-        const localList = JSON.parse(window.localStorage.getItem("shoppingList"));
-        localList.push(item);
-        window.localStorage.setItem('shoppingList', JSON.stringify(localList));
-        setItems(localList);
-        setItemsChanged(!itemsChanged);
+        const itemsCopy = [...items];
+        itemsCopy.push(item);
+        setItems(itemsCopy);
     }
 
     const generateFilteredShoppingList = useCallback(() => {
@@ -106,11 +98,7 @@ export default function List() {
                 })}
             </ul>
             );
-    }, [listFilter, itemsChanged]);
-
-    function toggleItemsChanged() {
-      setItemsChanged(!itemsChanged);
-    }
+    }, [listFilter]);
 
     return (
       <div className="list-page">
